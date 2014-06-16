@@ -3,7 +3,7 @@ require 'spec_helper'
 module CalculationTimeframe
   describe CalculationTimeframe do
     before do
-      Timecop.freeze
+      Timecop.freeze Time.now
     end
 
     after do
@@ -37,6 +37,17 @@ module CalculationTimeframe
 
       it "should recognize last_year" do
         CalculationTimeframe.from_string("last_yr").to_a.should == [Time.now.advance(years: -1).beginning_of_year, Time.now.beginning_of_year]
+      end
+
+      it "should recognize YYYYQX" do
+        CalculationTimeframe.from_string("2008Q1").to_a.map(&:to_date).should == ["2008-1-1".to_date, "2008-3-31".to_date]
+        CalculationTimeframe.from_string("2008Q2").to_a.map(&:to_date).should == ["2008-4-1".to_date, "2008-6-30".to_date]
+        CalculationTimeframe.from_string("2008Q3").to_a.map(&:to_date).should == ["2008-7-1".to_date, "2008-9-30".to_date]
+        CalculationTimeframe.from_string("2008Q4").to_a.map(&:to_date).should == ["2008-10-1".to_date, "2008-12-31".to_date]
+      end
+
+      it "should recognize ytd" do
+        CalculationTimeframe.from_string("ytd").to_a.should == [Time.now.beginning_of_year, Time.now]
       end
     end
   end
