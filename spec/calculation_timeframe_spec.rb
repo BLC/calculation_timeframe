@@ -46,6 +46,10 @@ module CalculationTimeframe
         CalculationTimeframe.from_string("2008Q4").to_a.map(&:to_date).should == ["2008-10-1".to_date, "2008-12-31".to_date]
       end
 
+      it "should place quarter end times at the end of the day" do
+        CalculationTimeframe.from_string("2008Q1").to_a[1].should == "2008-3-31".to_date.end_of_day
+      end
+
       it "should recognize ytd" do
         CalculationTimeframe.from_string("ytd").to_a.should == [Time.now.beginning_of_year, Time.now]
       end

@@ -65,7 +65,7 @@ module CalculationTimeframe
     def extract_quarter(input)
       year, quarter = input.scan(/[0-9]+/).map(&:to_i)
       Timeframe.new(:days, 0, 0, Time.new(year).advance(months: 3 * (quarter - 1)),
-        Time.new(year).advance(months: 3 * quarter, days: -1))
+        Time.new(year).advance(months: 3 * quarter, days: -1).end_of_day)
     end
 
     def extract_last_timeframe(input)
