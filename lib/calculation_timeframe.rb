@@ -1,4 +1,5 @@
-require "calculation_timeframe/version"
+require 'calculation_timeframe/version'
+require 'active_support'
 require 'active_support/core_ext'
 require 'calculation_timeframe/timeframe'
 
@@ -76,16 +77,22 @@ module CalculationTimeframe
       end
       raise UnsupportedTimeframe if found_tf.nil?
 
-      case found_tf
-      when "dy"
-        Timeframe.new(SUPPORTED_TIME_FRAMES[found_tf], 1, 0, Time.now.beginning_of_day)
-      when "wk"
-        Timeframe.new(SUPPORTED_TIME_FRAMES[found_tf], 1, 0, Time.now.beginning_of_week)
-      when "mo"
-        Timeframe.new(SUPPORTED_TIME_FRAMES[found_tf], 1, 0, Time.now.beginning_of_month)
-      when "yr"
-        Timeframe.new(SUPPORTED_TIME_FRAMES[found_tf], 1, 0, Time.now.beginning_of_year)
-      end
+      date_shift = {}.tap { |d| d[SUPPORTED_TIME_FRAMES[found_tf]] = -1 }
+      date_type = case found_tf
+        when "dy"
+          :day
+        when "wk"
+          :week
+        when "mo"
+          :month
+        when "yr"
+          :year
+        end
+
+      start_date = Time.now.advance(date_shift).send("beginning_of_#{date_type}")
+      end_date = start_date.send("end_of_#{date_type}")
+
+      Timeframe.new(SUPPORTED_TIME_FRAMES[found_tf], 0, 0, start_date, end_date)
     end
   end
 
