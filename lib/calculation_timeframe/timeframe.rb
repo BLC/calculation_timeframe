@@ -1,6 +1,6 @@
 module CalculationTimeframe
   class Timeframe
-    def initialize(time_period, amount, offset=0, start_time=Time.now, end_time=nil)
+    def initialize(time_period, amount, offset=0, start_time=Time.current, end_time=nil)
       @current_time = start_time
       @end_time = end_time
       @time_period = time_period

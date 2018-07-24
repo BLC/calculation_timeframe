@@ -60,7 +60,7 @@ module CalculationTimeframe
     end
 
     def year_to_date(input)
-      Timeframe.new(:days, 0, 0, Time.now.beginning_of_year, Time.now)
+      Timeframe.new(:days, 0, 0, Time.current.beginning_of_year, Time.current)
     end
 
     def extract_quarter(input)
@@ -89,7 +89,7 @@ module CalculationTimeframe
           :year
         end
 
-      start_date = Time.now.advance(date_shift).send("beginning_of_#{date_type}")
+      start_date = Time.current.advance(date_shift).send("beginning_of_#{date_type}")
       end_date = start_date.send("end_of_#{date_type}")
 
       Timeframe.new(SUPPORTED_TIME_FRAMES[found_tf], 0, 0, start_date, end_date)

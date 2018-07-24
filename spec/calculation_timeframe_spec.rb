@@ -3,7 +3,7 @@ require 'spec_helper'
 module CalculationTimeframe
   describe CalculationTimeframe do
     before do
-      Timecop.freeze Time.now
+      Timecop.freeze Time.current
     end
 
     after do
@@ -12,42 +12,42 @@ module CalculationTimeframe
 
     describe "from_string" do
       it "should recognize 1dy" do
-        expect(CalculationTimeframe.from_string("1dy").to_a).to eq([Time.now.advance(days: -1), Time.now])
+        expect(CalculationTimeframe.from_string("1dy").to_a).to eq([Time.current.advance(days: -1), Time.current])
       end
 
       it "should recognize 20dy" do
-        expect(CalculationTimeframe.from_string("20dy").to_a).to eq([Time.now.advance(days: -20), Time.now])
+        expect(CalculationTimeframe.from_string("20dy").to_a).to eq([Time.current.advance(days: -20), Time.current])
       end
 
       it "should recognize 3mo" do
-        expect(CalculationTimeframe.from_string("3mo").to_a).to eq([Time.now.advance(months: -3), Time.now])
+        expect(CalculationTimeframe.from_string("3mo").to_a).to eq([Time.current.advance(months: -3), Time.current])
       end
 
       it "should recognize 2wk" do
-        expect(CalculationTimeframe.from_string("2wk").to_a).to eq([Time.now.advance(weeks: -2), Time.now])
+        expect(CalculationTimeframe.from_string("2wk").to_a).to eq([Time.current.advance(weeks: -2), Time.current])
       end
 
       it "should recognize 3yr" do
-        expect(CalculationTimeframe.from_string("3yr").to_a).to eq([Time.now.advance(years: -3), Time.now])
+        expect(CalculationTimeframe.from_string("3yr").to_a).to eq([Time.current.advance(years: -3), Time.current])
       end
 
       it "should recognize last day" do
-        last_day = Time.now.advance(days: -1)
+        last_day = Time.current.advance(days: -1)
         expect(CalculationTimeframe.from_string('last_dy').to_a).to eq([last_day.beginning_of_day, last_day.end_of_day])
       end
 
       it "should recognize last week" do
-        last_week = Time.now.advance(weeks: -1)
+        last_week = Time.current.advance(weeks: -1)
         expect(CalculationTimeframe.from_string('last_wk').to_a).to eq([last_week.beginning_of_week, last_week.end_of_week])
       end
 
       it "should recognize last month" do
-        last_month = Time.now.advance(months: -1)
+        last_month = Time.current.advance(months: -1)
         expect(CalculationTimeframe.from_string('prev_mo').to_a).to eq([last_month.beginning_of_month, last_month.end_of_month])
       end
 
       it "should recognize last year" do
-        last_year = Time.now.advance(years: -1)
+        last_year = Time.current.advance(years: -1)
         expect(CalculationTimeframe.from_string('last_yr').to_a).to eq([last_year.beginning_of_year, last_year.end_of_year])
       end
 
@@ -63,7 +63,7 @@ module CalculationTimeframe
       end
 
       it "should recognize ytd" do
-        expect(CalculationTimeframe.from_string("ytd").to_a).to eq([Time.now.beginning_of_year, Time.now])
+        expect(CalculationTimeframe.from_string("ytd").to_a).to eq([Time.current.beginning_of_year, Time.current])
       end
     end
   end
